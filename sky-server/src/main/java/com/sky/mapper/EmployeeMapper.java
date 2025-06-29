@@ -33,6 +33,7 @@ public interface EmployeeMapper {
     we implement on employeeService
      */
 
+    void update(Employee employee);
 
 
 }
