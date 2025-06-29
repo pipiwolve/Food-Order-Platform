@@ -23,4 +23,10 @@ public interface EmployeeService {
 
     // start or stop
     void startOrStop(Integer status, Long id);
+
+    // 修改员工信息
+    void update(EmployeeDTO employeeDTO);
+
+    // search employee by id
+    Employee getById(Long id);
 }
