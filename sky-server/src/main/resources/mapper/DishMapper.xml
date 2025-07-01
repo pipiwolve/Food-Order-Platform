@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DishMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <!--
+        使用 useGeneratedKeys 返回主键值，是为了获取新增菜品的 id。
+        因为菜品（dish）与风味（flavor）表通过 dish_id 外键关联，
+        在新增菜品的同时需向风味表插入对应数据，因此必须获取生成的主键 id。
+        -->
+        insert into dish (name, category_id, price, image, description, create_time, update_time, create_user, update_user, status)
+        values (
+                #{name},#{categoryId},#{price},#{image},#{description},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status}
+               )
+    </insert>
+</mapper>
