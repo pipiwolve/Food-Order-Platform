@@ -130,4 +130,6 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> list(Integer type) {
         return categoryMapper.list(type);
     }
+
+
 }

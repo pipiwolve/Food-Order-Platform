@@ -2,7 +2,6 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
@@ -22,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,7 +41,7 @@ public class DishServiceImpl implements DishService {
      *
      * @param dishDTO
      */
-    @Transactional
+
     public void saveWithFlavor(DishDTO dishDTO) {
 
 
@@ -64,8 +62,6 @@ public class DishServiceImpl implements DishService {
                 dishFlavor.setDishId(dishId);
             });
             dishFlavorMapper.insertBatch(flavors);
-
-
         }
 
     }
@@ -104,14 +100,6 @@ public class DishServiceImpl implements DishService {
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
         }
 
-        //删除菜品表中的菜品数据
-/*
-        for (Long id : ids) {
-            dishMapper.deleteById(id);
-            //删除菜品关联的口味数据
-            dishFlavorMapper.deleteByDishId(id);
-        }
-*/
         // 根据菜品id集合批量删除菜品
         // sql: delete from dish where id in (?,?,?)
         dishMapper.deleteByIds(ids);
@@ -155,6 +143,28 @@ public class DishServiceImpl implements DishService {
             });
             dishFlavorMapper.insertBatch(flavors);
         }
-
     }
+
+    /**
+     *
+     * @param categoryId
+     * @return
+     */
+    /*思路：首先一个套餐类(被我们通过categoryId区分)底下有许多的菜品信息，
+            但是我么在套餐查询的页面有三个查询的选项
+            1. 套餐名称 name
+            2. 套餐分类 categoryId
+            3. 售卖状态 status
+            那这时候时候就变成我们三种方式可以进行传参查询，写三种方式进行传值太过冗余
+            所以我们用builder方式将这三个值封装进dish对象，作为dish对象传入
+            最后通过select返回的符合结果通常不是只有一条所以用List<Dish>进行接收
+     */
+    public List<Dish> list(Long categoryId){
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.list(dish);
+    }
+
 }
